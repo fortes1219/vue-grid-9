@@ -1,0 +1,125 @@
+/*== h1~h3的基本設定，以後可以自行擴充 ==*/
+
+$headings: (
+  h1: (
+    font-size: 40px,
+    line-height: 48px
+  ),
+  h2: (
+    font-size: 32px,
+    line-height: 40px
+  ),
+  h3: (
+    font-size: 26px,
+    line-height: 28px
+  )
+);
+
+//
+
+/*== 這個each會自動產生h1~h3原本的設定，底下不再需要重新定義 ==*/
+
+@each $heading, $properties in $headings {
+  #{$heading} {
+    @each $property, $value in $properties {
+      #{$property}: $value;
+    }
+  }
+}
+
+/*== typography ==*/
+/*
+基本用法：
+cp-text-2xl
+cp-text-xs
+*/
+
+$text-size-xs: 12px;
+$text-size-sm: 14px;
+$text-size-base: 16px;
+$text-size-lg: 18px;
+$text-size-xl: 21px;
+$text-size-2xl: 24px;
+$text-size-3xl: 27px;
+$text-size-4xl: 30px;
+$text-size-5xl: 36px;
+
+$textConfig: (
+  max-clamp: 10,
+  size-prefix: (
+    'xs',
+    'sm',
+    'base',
+    'lg',
+    'xl',
+    '2xl',
+    '3xl'
+  ),
+  size: (
+    12px,
+    14px,
+    16px,
+    18px,
+    21px,
+    24px,
+    27px
+  ),
+  bold: (
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ),
+  line-height: (
+    100,
+    110,
+    120,
+    130,
+    140,
+    150,
+    160,
+    170,
+    180,
+    190,
+    200
+  ),
+  default-color: #ffffff
+);
+
+$textPrefixList: map-get($textConfig, size-prefix);
+$textSizeList: map-get($textConfig, size);
+$textBoldList: map-get($textConfig, bold);
+$textLineHeightList: map-get($textConfig, line-height);
+
+@each $size in $textSizeList {
+  $index: index($textSizeList, $size);
+  .#{$theme-prefix}-text-#{nth($textPrefixList, $index)} {
+    font-size: $size;
+    color: map-get($textConfig, default-color);
+    @for $i from 1 through map-get($textConfig, max-clamp) {
+      &.clamp-#{$i} {
+        @include useEllipsis(null, $i);
+      }
+    }
+    @each $align in 'left', 'right', 'center' {
+      &.#{$align} {
+        text-align: #{$align};
+      }
+    }
+    @each $bold in $textBoldList {
+      &.bold-#{$bold} {
+        font-weight: #{$bold};
+      }
+    }
+    @each $lineHeight in $textLineHeightList {
+      &.lh-#{$lineHeight} {
+        line-height: #{$lineHeight}+ '%';
+      }
+    }
+  }
+}

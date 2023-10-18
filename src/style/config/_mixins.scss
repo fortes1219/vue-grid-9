@@ -1,0 +1,37 @@
+/*== clamp ellipsis: 文本溢位可指定行數啟用 ==*/
+// width 用來設定容器固定寬，可接受 fit-content
+// -webkit-line-clamp: $line-count = 指定顯示「...」的行數
+
+%extendEllipsis {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  height: auto;
+  line-height: inherit;
+  overflow: hidden;
+}
+
+@mixin useEllipsis($width, $line-count) {
+  width: $width;
+  -webkit-line-clamp: $line-count;
+  overflow: hidden;
+  @extend %extendEllipsis;
+}
+
+/*== 取得map中的style樣式設定來生成CSS ==*/
+/*
+ ex:
+ $map: (
+   width: 100px,
+   height: 100px,
+   background-color: red
+ );
+ div {
+    @include getMapStyles($map);
+ }
+*/
+
+@mixin getMapStyles($map) {
+  @each $key, $value in $map {
+    #{$key}: $value;
+  }
+}

@@ -1,0 +1,148 @@
+@use '@/style/base.scss' as base;
+
+/*==== Theme Colors ===*/
+
+$themeColor: (
+  primary: (
+    default: #8f8974,
+    900: #16130d,
+    800: #2c2720,
+    700: #37342b,
+    600: #514e44,
+    500: #716e63,
+    400: #8d897d,
+    300: #a8a59a,
+    200: #c4c0b5,
+    100: #e2ded1,
+    50: #f7f3e9
+  ),
+  secondary: (
+    default: #85754a,
+    floor: #111835,
+    900: #1d0a00,
+    800: #2d2200,
+    700: #443810,
+    600: #5d4f26,
+    500: #77683d,
+    400: #938256,
+    300: #ae9d70,
+    200: #cbb88a,
+    100: #e9d5a6,
+    50: #fff2c1
+  ),
+  accent: (
+    default: #fbe14b,
+    700: #c7b20e,
+    600: #d1bb1e,
+    500: #dcc42b,
+    400: #e6ce37,
+    300: #f0d741,
+    200: #fbe14b,
+    100: #ffea55,
+    50: #fff45f
+  ),
+  semantic: (
+    negative: #e85353,
+    warning: #e9c339,
+    positive: #65e062,
+    ease: #8cffff,
+    promo: #ef88ff,
+    dramatic: linear-gradient(180deg, #baa671, #d4be81),
+  ),
+  negative: (
+    default: #ef1919
+  ),
+  warning: (
+    default: #f0c732
+  ),
+  positive: (
+    default: #09a011
+  ),
+  alphaLight: (
+    default: #ffffff,
+    alpha-05: rgba(255, 255, 255, 0.05),
+    alpha-1: rgba(255, 255, 255, 0.1),
+    alpha-2: rgba(255, 255, 255, 0.2),
+    alpha-3: rgba(255, 255, 255, 0.3),
+    alpha-4: rgba(255, 255, 255, 0.4),
+    alpha-5: rgba(255, 255, 255, 0.5),
+    alpha-6: rgba(255, 255, 255, 0.6),
+    alpha-7: rgba(255, 255, 255, 0.7),
+    alpha-8: rgba(255, 255, 255, 0.8),
+    alpha-9: rgba(255, 255, 255, 0.9)
+  ),
+  alphaDark: (
+    default: #0c0700,
+    dark-05: rgba(12, 7, 0, 0.05),
+    dark-10: rgba(12, 7, 0, 0.1),
+    dark-20: rgba(12, 7, 0, 0.2),
+    dark-30: rgba(12, 7, 0, 0.2),
+    dark-40: rgba(12, 7, 0, 0.4),
+    dark-50: rgba(12, 7, 0, 0.5),
+    dark-60: rgba(12, 7, 0, 0.6),
+    dark-70: rgba(12, 7, 0, 0.7),
+    dark-80: rgba(12, 7, 0, 0.8),
+    dark-90: rgba(12, 7, 0, 0.9)
+  )
+);
+
+@each $category, $color in $themeColor {
+  @each $variant, $value in $color {
+    @if type-of($value) == map {
+      @each $subvariant, $subvalue in $value {
+        .#{base.$theme-prefix}-#{'' + $category}-#{$subvariant} {
+          @if str-index(inspect($subvalue), 'linear-gradient') {
+            background: $subvalue;
+          } @else {
+            color: $subvalue;
+          }
+        }
+      }
+    } @else {
+      .#{base.$theme-prefix}-#{'' + $category}-#{$variant} {
+        @if str-index(inspect($value), 'linear-gradient') {
+          background: $value;
+        } @else {
+          color: $value;
+        }
+      }
+    }
+  }
+}
+
+@function useColor($category, $variant: 'default') {
+  $color: map-get(map-get($themeColor, $category), $variant);
+  @return $color;
+}
+
+/* body scroll bar */
+
+/* Works on Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: useColor('alphaDark', 'dark-50');
+  border-radius: 12px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  padding: 2px;
+  background-color: useColor('alphaLight', 'alpha-05');
+  border: 1px solid useColor('primary', 900);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: useColor('alphaLight', 'alpha-1');
+  border: 1px solid useColor('primary', 900);
+}
+
+/* import components */
+@import './components/Layout.scss';
+@import './components/HeaderBar.scss';
+

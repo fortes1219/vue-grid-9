@@ -1,0 +1,124 @@
+/* for mixin */
+
+@mixin useLinear($time) {
+  transition: all $time cubic-bezier(0.250, 0.250, 0.750, 0.750);
+  -webkit-transition: all $time cubic-bezier(0.250, 0.250, 0.750, 0.750);
+  -moz-transition: all $time cubic-bezier(0.250, 0.250, 0.750, 0.750);
+  -o-transition: all $time cubic-bezier(0.250, 0.250, 0.750, 0.750);
+}
+
+@mixin useEase($time) {
+  transition: all $time cubic-bezier(0.250, 0.100, 0.250, 1.000);
+  -webkit-transition: all $time cubic-bezier(0.250, 0.100, 0.250, 1.000);
+  -moz-transition: all $time cubic-bezier(0.250, 0.100, 0.250, 1.000);
+  -o-transition: all $time cubic-bezier(0.250, 0.100, 0.250, 1.000);
+}
+
+@mixin useEaseInOut($time) {
+  transition: all $time cubic-bezier(0.420, 0.000, 0.580, 1.000);
+  -webkit-transition: all $time cubic-bezier(0.420, 0.000, 0.580, 1.000);
+  -moz-transition: all $time cubic-bezier(0.420, 0.000, 0.580, 1.000);
+  -o-transition: all $time cubic-bezier(0.420, 0.000, 0.580, 1.000);
+}
+
+@mixin useEaseOutCirc($time) {
+  transition: all $time cubic-bezier(0.785, 0.135, 0.150, 0.860);
+  -webkit-transition: all $time cubic-bezier(0.785, 0.135, 0.150, 0.860);
+  -moz-transition: all $time cubic-bezier(0.785, 0.135, 0.150, 0.860);
+  -o-transition: all $time cubic-bezier(0.785, 0.135, 0.150, 0.860);
+}
+
+@mixin useEaseInOutExpo($time) {
+  transition: all $time cubic-bezier(1, 0, 0, 1);
+  -webkit-transition: all $time cubic-bezier(1, 0, 0, 1);
+  -moz-transition: all $time cubic-bezier(1, 0, 0, 1);
+  -o-transition: all $time cubic-bezier(1, 0, 0, 1);
+}
+
+@mixin useEaseInOutQuint($time) {
+  transition: all $time cubic-bezier(0.86, 0, 0.07, 1);
+  -webkit-transition: all $time cubic-bezier(0.86, 0, 0.07, 1);
+  -moz-transition: all $time cubic-bezier(0.86, 0, 0.07, 1);
+  -o-transition: all $time cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+@mixin useEaseInOutBack($time) {
+  transition: all $time cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-transition: all $time cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -moz-transition: all $time cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -o-transition: all $time cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@mixin useEaseOutBack($time) {
+  transition: all $time cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-transition: all $time cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -moz-transition: all $time cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -o-transition: all $time cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* for extend */
+/*
+使用時記得以 transition-duration 覆蓋掉時間
+ex:
+span {
+  @extend %useLinear;
+  transition-duration: 0.3s;
+}
+
+*/
+
+%useLinear {
+  transition: all 0.5s cubic-bezier(0.250, 0.250, 0.750, 0.750);
+  -webkit-transition: all 0.5s cubic-bezier(0.250, 0.250, 0.750, 0.750);
+  -moz-transition: all 0.5s cubic-bezier(0.250, 0.250, 0.750, 0.750);
+  -o-transition: all 0.5s cubic-bezier(0.250, 0.250, 0.750, 0.750);
+}
+
+%useEase {
+  transition: all 0.5s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+  -webkit-transition: all 0.5s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+  -moz-transition: all 0.5s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+  -o-transition: all 0.5s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+}
+
+%useEaseInOut {
+  transition: all 0.5s cubic-bezier(0.420, 0.000, 0.580, 1.000);
+  -webkit-transition: all 0.5s cubic-bezier(0.420, 0.000, 0.580, 1.000);
+  -moz-transition: all 0.5s cubic-bezier(0.420, 0.000, 0.580, 1.000);
+  -o-transition: all 0.5s cubic-bezier(0.420, 0.000, 0.580, 1.000);
+}
+
+%useEaseOutCirc {
+  transition: all 0.5s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+  -webkit-transition: all 0.5s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+  -moz-transition: all 0.5s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+  -o-transition: all 0.5s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+}
+
+%useEaseInOutExpo {
+  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+  -webkit-transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+  -moz-transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+  -o-transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+}
+
+%useEaseInOutQuint {
+  transition: all 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+  -webkit-transition: all 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+  -moz-transition: all 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+  -o-transition: all 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+%useEaseInOutBack {
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -moz-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -o-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+%useEaseOutBack {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -moz-transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -o-transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}

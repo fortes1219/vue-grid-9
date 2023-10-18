@@ -1,0 +1,145 @@
+@mixin flexBox($direction, $alignItems, $justifyContent) {
+  display: flex;
+  flex-direction: $direction;
+  @if ($alignItems != null) {
+    align-items: $alignItems;
+  }
+  @if ($justifyContent != null) {
+    justify-content: $justifyContent;
+  }
+}
+
+@mixin flexListItem($rows, $margin, $unit) {
+  // width算法上要抵銷margin-right，因為是100/$rows，所以最後需要加上$margin的20%
+  $mod: math.div(math.div(100, $rows), 100);
+  width: calc((100% / #{$rows}) - #{$margin + $unit} + (#{$margin} * #{$mod + $unit}));
+  margin-right: #{$margin + $unit};
+  margin-bottom: #{$margin + $unit};
+  &:nth-child(#{$rows}n) {
+    margin-right: 0;
+  }
+}
+
+@mixin flexColumnListItem($rows, $margin, $unit) {
+  // height算法上要抵銷margin-right，因為是100/$rows，所以最後需要加上$margin的20%
+  $mod: math.div(math.div(100, $rows), 100);
+  height: calc((100% / #{$rows}) - #{$margin + $unit} + (#{$margin} * #{$mod + $unit}));
+  margin-right: #{$margin + $unit};
+  margin-bottom: #{$margin + $unit};
+  &:nth-child(#{$rows}n) {
+    margin-bottom: 0;
+  }
+}
+
+.flx {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+
+  &.is-list::after {
+    content: '';
+    display: flex;
+    flex: 1;
+  }
+
+  &.fit {
+    width: fit-content;
+  }
+
+  &.auto {
+    width: auto;
+  }
+
+  &.is-row {
+    @include flexBox(row, null, null);
+
+    &.v-center {
+      @include flexBox(row, center, null);
+    }
+
+    &.v-center-end {
+      @include flexBox(row, center, flex-end);
+    }
+
+    &.h-center {
+      @include flexBox(row, flex-start, center);
+    }
+
+    &.h-end {
+      @include flexBox(row, null, flex-end);
+    }
+
+    &.b-left {
+      @include flexBox(row, flex-end, null);
+    }
+
+    &.b-center {
+      @include flexBox(row, flex-end, center);
+    }
+
+    &.b-right {
+      @include flexBox(row, flex-end, flex-end);
+    }
+
+    &.stretch {
+      align-items: stretch;
+    }
+  }
+
+  &.is-col {
+    @include flexBox(column, null, null);
+
+    &.v-center {
+      @include flexBox(column, null, center);
+    }
+
+    &.v-center-end {
+      @include flexBox(column, flex-end, center);
+    }
+
+    &.h-center {
+      @include flexBox(column, center, null);
+    }
+
+    &.h-end {
+      @include flexBox(column, flex-end, null);
+    }
+
+    &.b-left {
+      @include flexBox(column, null, flex-end);
+    }
+
+    &.b-center {
+      @include flexBox(column, center, flex-end);
+    }
+
+    &.b-right {
+      @include flexBox(column, flex-end, flex-end);
+    }
+  }
+
+  &.sp-between {
+    justify-content: space-between;
+  }
+
+  &.sp-around {
+    justify-content: space-around;
+  }
+
+  &.sp-evenly {
+    justify-content: space-evenly;
+  }
+
+  &.center {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.grow {
+    height: 100%;
+  }
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
+}

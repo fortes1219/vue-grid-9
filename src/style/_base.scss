@@ -1,0 +1,29 @@
+@use 'sass:math';
+// 主題名稱前綴，可以依照專案不同版型替換名稱
+$theme-prefix: 'neu';
+
+/* import tailwindCSS Libs */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* import config Libs */
+@import './config/easing.scss';
+@import './config/mixins';
+@import './config/flexbox.scss';
+@import './config/grid.scss';
+@import './config/typography.scss';
+@import './config/remAdaptor.scss';
+
+/* import google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap');
+
+//
+
+:-webkit-autofill,
+:-webkit-autofill:hover,
+:-webkit-autofill:focus,
+:-webkit-autofill:active {
+  transition: background-color 9999s ease-in-out 0s;
+}
+

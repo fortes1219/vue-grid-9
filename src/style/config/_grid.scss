@@ -1,0 +1,28 @@
+/*
+grid清單的寫法:
+$rows => 一行幾個元素
+$gap => 元素之間的間距
+$autoSize => 用來指定每個元素最小高度，接受 'auto' / null / 任何單位的高度
+
+當某一列的特定元素內容高度高過其他元素，會自動拉伸該列所有兄弟元素高度
+
+用法例子：
+創建一個每列6個元素的清單，每個元素間距10px，每個元素最小高度100px
+
+.sample-list {
+  @include gridList(6, 10px, 100px);
+  width: 600px;
+}
+
+*/
+
+@mixin gridList($rows, $gap, $autoSize) {
+  display: grid;
+  grid-template-columns: repeat($rows, 1fr);
+  grid-gap: $gap;
+  @if $autoSize == 'auto' or $autoSize == null {
+    grid-auto-rows: minmax(min-content, max-content);
+  } @else {
+    grid-auto-rows: minmax($autoSize, max-content);
+  }
+}
