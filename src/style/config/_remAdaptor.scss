@@ -2,12 +2,12 @@
 $baseRemRate: 16px;
 
 @function strip-unit($number) {
-  @return $number / ($number * 0 + 1);
+  @return math.div($number, ($number * 0 + 1));
 }
 
 @function px-to-rem($value) {
   @if unit($value) == 'px' {
-    @return (strip-unit($value) / strip-unit($baseRemRate)) * 1rem;
+    @return math.div(strip-unit($value), strip-unit($baseRemRate)) * 1rem;
   } @else if unit($value) == 'rem' {
     @return strip-unit($value) * $baseRemRate;
   } @else {
