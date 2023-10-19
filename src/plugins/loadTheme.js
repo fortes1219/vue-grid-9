@@ -3,7 +3,6 @@ export async function loadTheme(theme) {
     // 使用物件映射處理動態載入Scss來源
     const themeMap = {
       black: () => import('@/style/themes/black/theme.scss'),
-      xmasTheme: () => import('@/style/themes/xmas/theme.scss'),
     };
   
     if (theme in themeMap) {
