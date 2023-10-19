@@ -10,17 +10,26 @@ import HeaderBar from "@/components/HeaderBar.vue";
 
 const menuData = ref([]);
 
-const getDrawerMenuData = async () => {
-  const res = await fetch("/data.json");
-  if (res.ok) {
-    menuData.value = await res.json();
-    console.log("menuData.value:", menuData.value);
-  } else {
-    console.error("Failed to fetch menu data:", res.statusText);
+const getMenuDataURL = () => {
+  return import.meta.env.MODE === 'production'
+    ? "/vue-grid-9/data.json"
+    : "/data.json";
+};
+
+const fetchMenuData = async () => {
+  try {
+    const response = await fetch(getMenuDataURL());
+    if (!response.ok) {
+      throw new Error(`Failed to fetch menu data: ${response.statusText}`);
+    }
+    menuData.value = await response.json();
+    console.log("Fetched menu data:", menuData.value);
+  } catch (error) {
+    console.error(error.message);
   }
 };
 
 onMounted(() => {
-  getDrawerMenuData();
+  fetchMenuData();
 });
 </script>
