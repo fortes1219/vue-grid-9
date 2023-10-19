@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import "@/style/index.scss";
 import App from "./App.vue";
 import router from "@/router";
+import vant from 'vant';
 import debouncedSetRootFontSize from "@/utils/rem.js";
 import { loadTheme } from "@/plugins/loadTheme";
 
