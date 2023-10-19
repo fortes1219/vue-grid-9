@@ -3,6 +3,7 @@ import "@/style/index.scss";
 import App from "./App.vue";
 import router from "@/router";
 import vant from 'vant';
+import 'vant/lib/index.css';
 import debouncedSetRootFontSize from "@/utils/rem.js";
 import { loadTheme } from "@/plugins/loadTheme";
 
@@ -30,5 +31,5 @@ async function fetchThemeName() {
   // 根據 API 返回的主題名稱動態切換主題
   await loadTheme(themeName);
 
-  app.use(router).mount("#app");
+  app.use(router).use(vant).mount("#app");
 })();

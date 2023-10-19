@@ -1,0 +1,34 @@
+$drawer-config: (
+  main: (
+    position: fixed,
+    top: 0,
+    right: 0,
+    z-index: 20,
+    width: 60%,
+    transform: translateX(100%),
+    min-width: 280px,
+    height: 100%,
+    background-color: useColor("primary", 900),
+    backdrop-filter: blur(10px)
+  ),
+  body: (
+    width: 100%,
+    height: 100%,
+  ),
+);
+
+$drawer-selector--main: ".#{base.$theme-prefix}-drawer";
+$drawer-main: map-get($drawer-config, main);
+$drawer-body: map-get($drawer-config, body);
+
+#{$drawer-selector--main} {
+  @include base.getMapStyles($drawer-main);
+  @include base.useEaseInOutExpo(0.3s);
+  &__body {
+    @include base.flexBox(column, null, null);
+    @include base.getMapStyles($drawer-body);
+  }
+  &.is-open {
+    transform: translateX(0);
+  }
+}

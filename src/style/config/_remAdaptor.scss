@@ -1,5 +1,5 @@
-// 當前的版面設計以16px為基準字級
-$baseRemRate: 16px;
+// 當前的版面設計以16px為基準字級，但是在實際開發等比布局時為了方便，我們直接除以100
+$baseRemRate: 100px;
 
 @function strip-unit($number) {
   @return math.div($number, ($number * 0 + 1));

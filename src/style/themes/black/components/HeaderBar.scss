@@ -1,0 +1,48 @@
+$header-bar-config: (
+  main: (
+    position: relative,
+    width: 100%,
+    height: base.px-to-rem(66px),
+    background: useColor('alphaLight', 'alpha-05'),
+    backdrop-filter: blur(10px),
+    z-index: 10,
+  ),
+  title: (
+    font-size: base.px-to-rem(base.$text-size-base),
+    font-weight: base.$text-bold-700,
+    color: useColor('alphaLight', 'alpha-80'),
+  ),
+  btn: (
+    width: base.px-to-rem(40px),
+    height: base.px-to-rem(40px),
+    margin: 0 base.px-to-rem(10px),
+    cursor: pointer,
+  ),
+  icons: (
+    font-size: base.px-to-rem(base.$text-size-2xl),
+    color: useColor('alphaLight', 'alpha-80'),
+  )
+);
+
+$header-bar-selector--main: '.#{base.$theme-prefix}-header-bar';
+$header-bar-main: map-get($header-bar-config, main);
+
+$header-bar-title: map-get($header-bar-config, title);
+$header-bar-btn: map-get($header-bar-config, btn);
+$header-bar-icons: map-get($header-bar-config, icons);
+
+
+#{$header-bar-selector--main} {
+  @include base.flexBox(row, center, space-between);
+  @include base.getMapStyles($header-bar-main);
+  &__title {
+    @include base.getMapStyles($header-bar-title);
+  }
+  &__btn {
+    @include base.flexBox(row, center, center);
+    @include base.getMapStyles($header-bar-btn);
+  }
+  &__icons {
+    @include base.getMapStyles($header-bar-icons);
+  }
+}
