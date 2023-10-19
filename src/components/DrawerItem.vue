@@ -1,40 +1,37 @@
 <template>
   <li>
-    <div @click="toggleItem">
-      {{ item.text }}
-    </div>
-    <ul v-if="item.children && isActive">
-      <drawer-item
+    <!--因為外層有使用useClickOutside，這裡需要防止冒泡，加上.stop-->
+    <span @click.stop="handleClick">{{ item.text }}</span>
+    <ul v-if="item.children && item.isOpen">
+      <DrawerItem
         v-for="child in item.children"
         :key="child.key"
         :item="child"
-        :active-path.sync="activePath"
-      ></drawer-item>
+        @item-clicked="handleItemClicked"
+      />
     </ul>
   </li>
 </template>
 
 <script setup>
-import { ref, computed, defineProps, defineEmits } from "vue";
-
+import { ref } from 'vue';
 const props = defineProps({
-  item: { type: Object, required: true },
-  activePath: { type: Array, required: true },
+  item: {
+    type: Object,
+    required: true
+  }
 });
 
-const emits = defineEmits(["update:activePath"]);
+/** 送出一個emit通知父層有children被點擊 */
+const emit = defineEmits(['item-clicked']);
 
-const isActive = computed(() => props.activePath.includes(props.item.key));
-
-const toggleItem = () => {
-  if (isActive.value) {
-    emits("update:activePath", props.activePath.slice(0, -1));
-  } else {
-    if (props.activePath.length >= 1) {
-      emits("update:activePath", [props.item.key]);
-    } else {
-      emits("update:activePath", [...props.activePath, props.item.key]);
-    }
-  }
+const handleClick = () => {
+  props.item.isOpen = !props.item.isOpen;
+  emit('item-clicked', props.item.groupId, props.item.groupParentId);
 };
+
+const handleItemClicked = (childGroupId, childGroupParentId) => {
+  emit('item-clicked', childGroupId, childGroupParentId);
+};
+
 </script>
