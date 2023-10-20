@@ -48,17 +48,21 @@ const handleDrawerOpen = debounce(toggleDrawer, 300);
 
 /** 觸發 list item 點擊事件 */
 const closeItemsExcept = (items, excludeId) => {
-  items.filter(item => item.groupId !== excludeId).forEach(item => item.isOpen = false);
-}
+  items.forEach(item => {
+    if (item.groupId !== excludeId) {
+      item.isOpen = false;
+    }
+  });
+};
 
 const handleCloseItemsInHierarchy = (items, clickedGroupId) => {
-  // 如果當前層級找到了被點擊的項目，則關閉同級的其他項目
+  // 如果當前層級找到了被點擊的項目，關閉同級的其他項目
   if (items.some(item => item.groupId === clickedGroupId)) {
     closeItemsExcept(items, clickedGroupId);
     return;
   }
   
-  // 如果沒有找到，則遍歷子項目並進行遞歸搜索
+  // 如果沒有找到任何被點擊的項目，則對後代進行遞迴搜索
   items.forEach(item => {
     if (item.children) {
       handleCloseItemsInHierarchy(item.children, clickedGroupId);
