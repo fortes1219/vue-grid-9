@@ -1,6 +1,10 @@
 import { ref } from "vue";
 
 export function useDrawerMenuItems(props, emit) {
+    /*
+    由於題目說到需考慮100層時的效能問題，所以先創建一個itemMap
+    用來記錄每個item的groupId，以及對應的item方便查找
+    */
     const itemMap = ref({});
 
     const createItemMap = (items) => {
