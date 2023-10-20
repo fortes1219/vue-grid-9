@@ -1,6 +1,6 @@
 <template>
   <div class="neu-layout">
-    <HeaderBar :list="menuData" />
+    <HeaderBar :list="menuData" @update:list="updateList" />
     <div class="neu-container">
       <GridView />
     </div>
@@ -60,6 +60,9 @@ const fetchMenuData = async () => {
   }
 };
 
+const updateList = (newList) => {
+  menuData.value = newList;
+};
 
 onMounted(() => {
   fetchMenuData();
