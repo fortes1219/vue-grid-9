@@ -16,23 +16,6 @@
           @item-clicked="handleItemClicked"
         />
       </ul>
-      <!-- <ul>
-        <li v-for="item in list" :key="item.key">
-          <span @click="toggleItem(item)">{{ item.text }}</span>
-          <ul v-if="item.children && item.isOpen">
-            <li v-for="child in item.children" :key="child.key">
-              <span @click="toggleChildItem(item, child)">{{
-                child.text
-              }}</span>
-              <ul v-if="child.children && child.isOpen">
-                <li v-for="grandChild in child.children" :key="grandChild.key">
-                  {{ grandChild.text }}
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul> -->
     </div>
   </div>
 </template>
@@ -64,31 +47,34 @@ const toggleDrawer = () => {
 const handleDrawerOpen = debounce(toggleDrawer, 300);
 
 /** 觸發 list item 點擊事件 */
+const closeItemsExcept = (items, excludeId) => {
+  items.filter(item => item.groupId !== excludeId).forEach(item => item.isOpen = false);
+}
+
+const handleCloseItemsInHierarchy = (items, clickedGroupId) => {
+  // 如果當前層級找到了被點擊的項目，則關閉同級的其他項目
+  if (items.some(item => item.groupId === clickedGroupId)) {
+    closeItemsExcept(items, clickedGroupId);
+    return;
+  }
+  
+  // 如果沒有找到，則遍歷子項目並進行遞歸搜索
+  items.forEach(item => {
+    if (item.children) {
+      handleCloseItemsInHierarchy(item.children, clickedGroupId);
+    }
+  });
+};
+
+/** 觸發 list item 點擊事件 */
 const handleItemClicked = (clickedGroupId, clickedGroupParentId) => {
-  if (clickedGroupParentId) {  // 如果是第二層或第三層的項目
-    // 你可以在這裡根據 clickedGroupId 和 clickedGroupParentId 來調整項目的狀態
-  } else {  // 如果是第一層的項目
-    props.list.forEach(item => {
-      if (item.groupId !== clickedGroupId) {
-        item.isOpen = false;
-      }
-    });
+  if (clickedGroupParentId) {
+    handleCloseItemsInHierarchy(props.list, clickedGroupId);
+  } else {
+    closeItemsExcept(props.list, clickedGroupId);
   }
 };
-/** 觸發 child item 點擊事件 */
 
-// const toggleItem = (item) => {
-//   item.isOpen = !item.isOpen;
-//   props.list.forEach((parent) => {
-//     if (parent !== item) {
-//       parent.isOpen = false;
-//     }
-//   });
-// };
-
-// const toggleChildItem = (parentItem, childItem) => {
-//   childItem.isOpen = !childItem.isOpen;
-// };
 
 onMounted(() => {
   console.log("HeaderBar props:", props.list);
