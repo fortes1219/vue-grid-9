@@ -61,15 +61,15 @@ $themeColor: (
   alphaLight: (
     default: #ffffff,
     alpha-05: rgba(255, 255, 255, 0.05),
-    alpha-1: rgba(255, 255, 255, 0.1),
-    alpha-2: rgba(255, 255, 255, 0.2),
-    alpha-3: rgba(255, 255, 255, 0.3),
-    alpha-4: rgba(255, 255, 255, 0.4),
-    alpha-5: rgba(255, 255, 255, 0.5),
-    alpha-6: rgba(255, 255, 255, 0.6),
-    alpha-7: rgba(255, 255, 255, 0.7),
-    alpha-8: rgba(255, 255, 255, 0.8),
-    alpha-9: rgba(255, 255, 255, 0.9)
+    alpha-10: rgba(255, 255, 255, 0.1),
+    alpha-20: rgba(255, 255, 255, 0.2),
+    alpha-30: rgba(255, 255, 255, 0.3),
+    alpha-40: rgba(255, 255, 255, 0.4),
+    alpha-50: rgba(255, 255, 255, 0.5),
+    alpha-60: rgba(255, 255, 255, 0.6),
+    alpha-70: rgba(255, 255, 255, 0.7),
+    alpha-80: rgba(255, 255, 255, 0.8),
+    alpha-90: rgba(255, 255, 255, 0.9)
   ),
   alphaDark: (
     default: #0c0700,
@@ -145,4 +145,6 @@ $themeColor: (
 /* import components */
 @import './components/Layout.scss';
 @import './components/HeaderBar.scss';
+@import './components/GridView.scss';
+@import './components/Drawer.scss';
 

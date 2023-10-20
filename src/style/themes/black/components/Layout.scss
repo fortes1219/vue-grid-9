@@ -1,15 +1,50 @@
 $layout-config: (
   main: (
+    position: relative,
     width: 100%,
     height: 100%,
     background-color: useColor('primary', 900),
+    background-image: url('@/assets/c621.webp'),
+    background-repeat: no-repeat,
+    background-position: top,
+    background-size: cover,
     font-size: base.px-to-rem(base.$text-size-base),
   ),
+  main-psuedo: (
+    content: '',
+    display: block,
+    position: absolute,
+    top: 0,
+    left: 0,
+    width: 100%,
+    height: 100%,
+    background-color: useColor('alphaDark', 'dark-60'),
+  ),
+  container: (
+    position: relative,
+    width: 100%,
+    height: 100%,
+    overflow-y: auto,
+    padding: base.px-to-rem(16px),
+  )
 );
 
 $layout-selector--main: '.#{base.$theme-prefix}-layout';
 $layout-main: map-get($layout-config, main);
+$layout-main-psuedo: map-get($layout-config, main-psuedo);
 
 #{$layout-selector--main} {
+  @include base.flexBox(column, null, null);
   @include base.getMapStyles($layout-main);
+  &::after {
+    @include base.getMapStyles($layout-main-psuedo);
+  }
+}
+
+$layout-selector--container: '.#{base.$theme-prefix}-container';
+$layout-container: map-get($layout-config, container);
+
+#{$layout-selector--container} {
+  @include base.flexBox(column, null, null);
+  @include base.getMapStyles($layout-container);
 }
