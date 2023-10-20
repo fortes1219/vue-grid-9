@@ -13,7 +13,7 @@ function setRootFontSize(doc, win) {
 
   // Set font size based on screen width
   const baseFontSize = 100 * (clientWidth / 390)
-  if (clientWidth >= 540) {
+  if (clientWidth >= 768) {
     // 依照實際需要修改裝置寬度上限
     doc.documentElement.style.fontSize = "100px"
   } else {

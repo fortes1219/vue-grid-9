@@ -3,7 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import * as path from "path"
 
 export default defineConfig({
-  base: "./",
+  base: process.env.NODE_ENV === 'production'
+  ? '/vue-grid-9/' : './',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, 'src'),
