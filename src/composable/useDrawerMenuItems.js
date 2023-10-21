@@ -76,5 +76,5 @@ export function useDrawerMenuItems(props, emit) {
       });
     };
 
-    return { handleItemClicked };
+    return { handleItemClicked, itemMap };
 }
