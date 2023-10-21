@@ -62,20 +62,22 @@ export function useDrawerMenuItems(props, emit) {
 
   // 根據點擊的 groupId 和 groupParentId 更新 activePath
   const updateActivePath = (clickedGroupId, clickedGroupParentId) => {
+    // 如果沒有 groupParentId，表示點擊的是 root，因此提前RETURN
     if (!clickedGroupParentId) {
       return [clickedGroupId];
-    } else {
-      const indexOfParent = activePath.value.indexOf(clickedGroupParentId);
-      if (indexOfParent !== -1) {
-        return [
-          ...activePath.value.slice(0, indexOfParent + 1),
-          clickedGroupId,
-        ];
-      } else {
-        console.error("Unexpected error: Parent ID not found in activePath.");
-        return activePath.value;
-      }
     }
+
+    // 尋找 parent 在 activePath 中的位置
+    const indexOfParent = activePath.value.indexOf(clickedGroupParentId);
+
+    // 如果找到了 parent，更新 activePath 並返回
+    if (indexOfParent !== -1) {
+      return [...activePath.value.slice(0, indexOfParent + 1), clickedGroupId];
+    }
+
+    // 沒有找到 parent，則印出錯誤並返回當前的 activePath，但應該不會發生
+    console.error("Unexpected error: Parent ID not found in activePath.");
+    return activePath.value;
   };
 
   return { handleItemClicked, itemMap };
