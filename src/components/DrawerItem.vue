@@ -35,17 +35,16 @@ const handleItemClicked = (childGroupId, childGroupParentId) => {
 };
 
 const isActive = computed(() => {
-  return props.item.isOpen || (props.item.children && props.item.children.some(child => child.isOpen));
+  return props.item.isOpen;
 });
 
 </script>
 
 <style scoped lang="scss">
 .highlight {
-  background-color: #f90;
-  color: white;
-  span {
-    color: white;  // 白色文字對於 #f90 背景會有較好的對比度
-  }
+  color: #f90;
+}
+li ul {
+  padding-left: 0.1rem;
 }
 </style>
