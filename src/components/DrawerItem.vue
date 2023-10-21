@@ -1,7 +1,7 @@
 <template>
   <li>
     <!--因為外層有使用useClickOutside，這裡需要防止冒泡，加上.stop-->
-    <span @click.stop="handleClick">{{ item.text }}</span>
+    <span :class="{ 'highlight': isActive }" @click.stop="handleClick">{{ item.text }}</span>
     <ul v-if="item.children && item.isOpen">
       <DrawerItem
         v-for="child in item.children"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 const props = defineProps({
   item: {
     type: Object,
@@ -34,4 +34,18 @@ const handleItemClicked = (childGroupId, childGroupParentId) => {
   emit('item-clicked', childGroupId, childGroupParentId);
 };
 
+const isActive = computed(() => {
+  return props.item.isOpen || (props.item.children && props.item.children.some(child => child.isOpen));
+});
+
 </script>
+
+<style scoped lang="scss">
+.highlight {
+  background-color: #f90;
+  color: white;
+  span {
+    color: white;  // 白色文字對於 #f90 背景會有較好的對比度
+  }
+}
+</style>
