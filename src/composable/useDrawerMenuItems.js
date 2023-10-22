@@ -12,53 +12,117 @@ export function useDrawerMenuItems(props, emit) {
   const activePath = ref([]);
 
   // 建立 itemMap，以便快速查找特定的 groupId
+  // 改用DFS，因為題目說到可能有100層，所以用遞迴的方式在同層後代多時，可能會有爆棧的問題
   const createItemMap = (items) => {
-    items.forEach((item) => {
+    const stack = [...items];
+    while (stack.length) {
+      const item = stack.pop();
       itemMap.value[item.groupId] = item;
       if (item.children) {
-        createItemMap(item.children);
+        stack.push(...item.children);
       }
-    });
+    }
   };
+
+  // const createItemMap = (items) => {
+  //   items.forEach((item) => {
+  //     itemMap.value[item.groupId] = item;
+  //     if (item.children) {
+  //       createItemMap(item.children);
+  //     }
+  //   });
+  // };
 
   // 初始化 itemMap
   createItemMap(props.list);
 
   // 當選單項目被點擊時的處理函數
   const handleItemClicked = (clickedGroupId, clickedGroupParentId) => {
-    // 更新 activePath 以反映當前的活動路徑
+    // 將全部的itemMap的項目中，isOpen設為false
+    for (let key in itemMap.value) {
+      itemMap.value[key].isOpen = false;
+    }
     activePath.value = updateActivePath(clickedGroupId, clickedGroupParentId);
-    console.log(activePath.value);
 
-    let updatedList = closeAllExcept(props.list, clickedGroupId);
-    updatedList = updateIsOpenStatus(updatedList);
+    // 遍歷生成的 activePath, 將 isOpen 設為 true
+    activePath.value.forEach((groupId) => {
+      itemMap.value[groupId].isOpen = true;
+    });
 
+    let updatedList = updateListUsingItemMap(props.list);
     emit("update:list", updatedList);
   };
 
-  // 根據 activePath 更新每個項目的 isOpen 狀態
-  const updateIsOpenStatus = (list) => {
+  // 對傳入的 itemMap 進行遍歷，找出 isOpen 後更新該項目的 isOpen 狀態
+  // 主要是確保isOpen狀態和itemMap中的狀態一致
+  const updateListUsingItemMap = (list) => {
     return list.map((item) => {
-      item.isOpen = activePath.value.includes(item.groupId);
+      item.isOpen = itemMap.value[item.groupId].isOpen;
       if (item.children) {
-        item.children = updateIsOpenStatus(item.children);
+        // 有後代則遞迴調用
+        item.children = updateListUsingItemMap(item.children);
       }
       return item;
     });
   };
 
+  // 根據 activePath 更新每個項目的 isOpen 狀態
+  // 改用DFS，註解的是原本的寫法
+  const updateIsOpenStatus = (list) => {
+    const stack = [...list];
+    const result = [];
+
+    while (stack.length) {
+      const item = stack.pop();
+      item.isOpen = activePath.value.includes(item.groupId);
+      if (item.children) {
+        stack.push(...item.children);
+      }
+      result.push(item);
+    }
+    return result;
+  };
+
+  // const updateIsOpenStatus = (list) => {
+  //   return list.map((item) => {
+  //     item.isOpen = activePath.value.includes(item.groupId);
+  //     if (item.children) {
+  //       item.children = updateIsOpenStatus(item.children);
+  //     }
+  //     return item;
+  //   });
+  // };
+
   // 關閉除了指定 groupId 以外的所有項目
+  // 改用DFS，註解的是原本的寫法
   const closeAllExcept = (list, exceptionId) => {
-    return list.map((item) => {
+    const stack = [...list];
+    const result = [];
+
+    while (stack.length) {
+      const item = stack.pop();
       if (item.groupId !== exceptionId) {
         item.isOpen = false;
       }
       if (item.children) {
-        item.children = closeAllExcept(item.children, exceptionId);
+        stack.push(...item.children);
       }
-      return item;
-    });
+      result.push(item);
+    }
+    return result;
   };
+
+  // const closeAllExcept = (list, exceptionId) => {
+  //   return list.map((item) => {
+  //     if (item.groupId !== exceptionId) {
+  //       item.isOpen = false;
+  //     }
+  //     if (item.children) {
+  //       item.children = closeAllExcept(item.children, exceptionId);
+  //     }
+  //     return item;
+  //   });
+  // };
 
   // 根據點擊的 groupId 和 groupParentId 更新 activePath
   const updateActivePath = (clickedGroupId, clickedGroupParentId) => {
@@ -112,6 +176,7 @@ export function useDrawerMenuItems(props, emit) {
   };
 
   return {
+    createItemMap,
     handleItemClicked,
     closeAllExcept,
     updateActivePath,
