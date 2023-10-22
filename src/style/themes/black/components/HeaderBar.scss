@@ -21,7 +21,18 @@ $header-bar-config: (
   icons: (
     font-size: base.px-to-rem(base.$text-size-2xl),
     color: useColor('alphaLight', 'alpha-80'),
-  )
+  ),
+  mask: (
+    position: fixed,
+    top: 0,
+    left: 0,
+    z-index: 11,
+    width: 100%,
+    height: 100%,
+    backdrop-filter: blur(0px),
+    transition: all 0.3s ease-in-out,
+    animation: mask-animation 0.3s ease-in-out forwards,
+  ),
 );
 
 $header-bar-selector--main: '.#{base.$theme-prefix}-header-bar';
@@ -30,6 +41,8 @@ $header-bar-main: map-get($header-bar-config, main);
 $header-bar-title: map-get($header-bar-config, title);
 $header-bar-btn: map-get($header-bar-config, btn);
 $header-bar-icons: map-get($header-bar-config, icons);
+
+$header-bar-mask: map-get($header-bar-config, mask);
 
 
 #{$header-bar-selector--main} {
@@ -44,5 +57,17 @@ $header-bar-icons: map-get($header-bar-config, icons);
   }
   &__icons {
     @include base.getMapStyles($header-bar-icons);
+  }
+  &__mask {
+    @include base.getMapStyles($header-bar-mask);
+  }
+}
+
+@keyframes mask-animation {
+  0% {
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    backdrop-filter: blur(10px);
   }
 }

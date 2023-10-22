@@ -1,0 +1,81 @@
+$grid-view-config: (
+  main: (
+    position: relative,
+    width: 100%,
+    flex-wrap: wrap,
+  ),
+  grid: (
+    position: relative,
+    z-index: 2,
+    border: 2px solid black,
+    width: base.px-to-rem(100px),
+    height: base.px-to-rem(100px),
+  ),
+  grid-pseudo: (
+    content: "",
+    position: absolute,
+    top: 0,
+    left: 0,
+    z-index: -1,
+    width: 100%,
+    height: 100%,
+    display: block,
+    background: radial-gradient(circle, rgba(113,81,95,1) 81%, rgba(0,0,0,1) 100%),
+  ),
+  grid-ball: (
+    position: absolute,
+    top: 50%,
+    left: 50%,
+    z-index: 2,
+    width: base.px-to-rem(20px),
+    height: base.px-to-rem(20px),
+    border-radius: 50%,
+    background-color: useColor('semantic', 'positive'),
+    transform: translate(-50%, -50%),
+    color: useColor('primary', 900)
+  ),
+);
+
+$grid-view-selector--main: ".#{base.$theme-prefix}-grid-view";
+$grid-view-main: map-get($grid-view-config, main);
+$grid-view-grid: map-get($grid-view-config, grid);
+$grid-view-grid-pseudo: map-get($grid-view-config, grid-pseudo);
+
+$grid-view-selector--grid-ball: ".#{base.$theme-prefix}-grid-view__ball";
+$grid-view-grid-ball: map-get($grid-view-config, grid-ball);
+
+%flash-bg {
+  animation: bg-flashing 0.5s infinite;
+}
+
+#{$grid-view-selector--main} {
+  @include base.getMapStyles($grid-view-main);
+  @include base.flexBox(row, null, center);
+  &__grid {
+    @include base.getMapStyles($grid-view-grid);
+    @include base.flexListItem(3, 0.1, 'rem');
+    &::after {
+      @include base.getMapStyles($grid-view-grid-pseudo);
+    }
+    &.is-flash {
+      &::after {
+        @extend %flash-bg;
+      }
+      
+    }
+  }
+}
+
+#{$grid-view-selector--grid-ball} {
+  @include base.getMapStyles($grid-view-grid-ball);
+  @include base.flexBox(row, center, center);
+}
+
+@keyframes bg-flashing {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
