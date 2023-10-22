@@ -6,6 +6,7 @@
       <van-icon name="apps-o" class="neu-header-bar__icons" />
     </div>
   </div>
+  <div v-if="isDrawerOpen" class="neu-header-bar__mask" @click="isDrawerOpen = false" />
   <div ref="drawerRef" :class="[`neu-drawer`, isDrawerOpen ? `is-open` : ``]">
     <div class="neu-drawer__body">
       <van-field
@@ -16,7 +17,7 @@
         placeholder="選擇飲料"
         @click="showPicker = true"
       />
-      <van-popup v-model:show="showPicker" round position="bottom">
+      <van-popup v-model:show="showPicker" round position="bottom" teleport="#app">
         <van-picker
           :columns="columns"
           @cancel="showPicker = false"
@@ -37,7 +38,6 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { useClickOutside } from "@/composable/useClickOutside";
 import { useDrawerMenuItems } from "@/composable/useDrawerMenuItems";
 import debounce from "lodash/debounce";
 import DrawerItem from "@/components/DrawerItem.vue";
@@ -122,9 +122,6 @@ const onConfirm = ({ selectedOptions }) => {
 /** Drawer 開關事件 */
 
 const isDrawerOpen = ref(false);
-const drawerRef = useClickOutside(() => {
-  isDrawerOpen.value = false;
-});
 
 const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value;
