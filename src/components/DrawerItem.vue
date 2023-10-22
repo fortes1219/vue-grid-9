@@ -44,6 +44,9 @@ const isActive = computed(() => {
 .highlight {
   color: #f90;
 }
+li span {
+  color: #fff;
+}
 li ul {
   padding-left: 0.1rem;
 }

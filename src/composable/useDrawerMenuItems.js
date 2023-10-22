@@ -80,5 +80,45 @@ export function useDrawerMenuItems(props, emit) {
     return activePath.value;
   };
 
-  return { handleItemClicked, itemMap };
+  /** 額外需求: 需要一個select來展開選單對應的路徑 */
+
+  const selectActivePathHandler = (
+    targetGroupId,
+    list = props.list,
+    path = []
+  ) => {
+    // 如果找到對應的 groupId，則返回當前的路徑加上該 groupId
+    const foundItem = list.find((item) => item.groupId === targetGroupId);
+
+    if (foundItem) {
+      return [...path, targetGroupId];
+    }
+
+    for (const item of list) {
+      // 如果該項目有子項目，則遞迴找出對應的路徑
+      if (!item.children) {
+        continue;
+      }
+      const childPath = selectActivePathHandler(targetGroupId, item.children, [
+        ...path,
+        item.groupId,
+      ]);
+      if (childPath.length) {
+        return childPath;
+      }
+    }
+
+    return [];
+  };
+
+  return {
+    handleItemClicked,
+    closeAllExcept,
+    updateActivePath,
+    updateIsOpenStatus,
+    selectActivePathHandler,
+    createItemMap,
+    itemMap,
+    activePath,
+  };
 }
