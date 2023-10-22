@@ -26,7 +26,7 @@ $layout-config: (
     position: relative,
     width: 100%,
     height: 100%,
-    overflow-y: auto,
+    overflow: hidden,
     padding: base.px-to-rem(16px),
   )
 );
@@ -47,6 +47,6 @@ $layout-selector--container: '.#{base.$theme-prefix}-container';
 $layout-container: map-get($layout-config, container);
 
 #{$layout-selector--container} {
-  @include base.flexBox(column, null, null);
+  @include base.flexBox(column, center, center);
   @include base.getMapStyles($layout-container);
 }

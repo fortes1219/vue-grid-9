@@ -11,6 +11,7 @@
       v-for="(ball, i) in ballsOrder" 
       :key="i" 
       class="neu-grid-view__ball"
+      v-moving-balls="{ direction: 'right', distance: 2.5, unit: 'rem', duration: '2s' }"
       :style="{ 
         top: ballPos[i].top + 'px', 
         left: ballPos[i].left + 'px',
@@ -22,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, nextTick, watchEffect, watch } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount, nextTick} from "vue";
 
 /** 指定在第幾格會閃爍 */
 const bgLightOrder = [3, 5, 9];
