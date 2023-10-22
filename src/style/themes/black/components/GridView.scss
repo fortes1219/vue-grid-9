@@ -48,6 +48,10 @@ $grid-view-grid-ball: map-get($grid-view-config, grid-ball);
   animation: bg-flashing 0.5s infinite;
 }
 
+%ball-animation {
+  animation: ball-animation 2s ease-in-out alternate infinite;
+}
+
 #{$grid-view-selector--main} {
   @include base.getMapStyles($grid-view-main);
   @include base.flexBox(row, null, center);
@@ -69,6 +73,7 @@ $grid-view-grid-ball: map-get($grid-view-config, grid-ball);
 #{$grid-view-selector--grid-ball} {
   @include base.getMapStyles($grid-view-grid-ball);
   @include base.flexBox(row, center, center);
+  @extend %ball-animation;
 }
 
 @keyframes bg-flashing {
@@ -77,5 +82,14 @@ $grid-view-grid-ball: map-get($grid-view-config, grid-ball);
   }
   50% {
     opacity: 0.6;
+  }
+}
+
+@keyframes ball-animation {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    transform: translate(2.5rem, -50%);
   }
 }

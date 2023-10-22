@@ -7,6 +7,7 @@
       class="neu-grid-view__grid"
       :class="{ 'is-flash': handleLightOrder(i) }">
     </div>
+    <!-- 第一種: Directive綁定動畫 -->
     <i 
       v-for="(ball, i) in ballsOrder" 
       :key="i" 
@@ -19,6 +20,18 @@
       }">
       {{ ball }}
     </i>
+    <!-- 第二種方式: 純CSS -->
+    <!-- <i 
+      v-for="(ball, i) in ballsOrder" 
+      :key="i" 
+      class="neu-grid-view__ball"
+      :style="{ 
+        top: ballPos[i].top + 'px', 
+        left: ballPos[i].left + 'px',
+        transform: `translate(${ballPos[i].x}${ballPos[i].unit}, ${ballPos[i].y}${ballPos[i].unit})`
+      }">
+      {{ ball }}
+    </i> -->
   </div>
 </template>
 
