@@ -62,12 +62,14 @@ watch(
   (newVal) => {
     menuList.value = [...newVal];
     columns.value = columnDataAdaptor(props.list);
+    createItemMap(newVal);
   }
 );
 
 /** 使用 useDrawerMenuItems composable */
 
 const {
+  createItemMap,
   handleItemClicked,
   updateActivePath,
   updateIsOpenStatus,
