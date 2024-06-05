@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-  import { ref, computed, watch } from 'vue';
+  import { ref, computed, watch, triggerRef } from 'vue';
 
   // 使用 defineModel 接收 item 的綁定
   const item = defineModel('item');
@@ -22,9 +22,7 @@
   };
 
   const handleItemClicked = (childGroupId, childGroupParentId) => {
-    // emit('item-clicked', childGroupId, childGroupParentId);
-    item.value.groupId = childGroupId;
-    item.value.groupParentId = childGroupParentId;
+    emit('item-clicked', childGroupId, childGroupParentId);
   };
 
   const isActive = computed(() => {
