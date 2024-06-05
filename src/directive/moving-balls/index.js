@@ -21,6 +21,7 @@ const movementStrategies = {
 const movingBalls = {
   beforeMount(el, binding) {
     const { direction, distance, unit, duration } = binding.value;
+    console.log('### beforeMount', el, binding);
     if (distance === 0) {
       return;
     }
