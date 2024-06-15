@@ -18,6 +18,9 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  define: {
+    '__VUE_PROD_HYDRATION_MISMATCH_DETAILS__': false,
+  },
   css: {
     devSourcemap: true
   }
