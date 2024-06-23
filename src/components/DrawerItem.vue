@@ -12,7 +12,7 @@
   import { ref, computed, watch, triggerRef } from 'vue';
 
   // 使用 defineModel 接收 item 的綁定
-  const item = defineModel('item');
+  const item = defineModel('item', { type: Object, required: true });
 
   const emit = defineEmits(['item-clicked']);
 
