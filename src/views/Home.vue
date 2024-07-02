@@ -8,6 +8,9 @@
     <div @click="dialogs.isVisible = true">OPEN Dialog</div>
     <DialogComponent v-model:isVisible.lazy="dialogs.isVisible" v-model:title.trim="dialogs.title" v-model:message.trim="dialogs.message" />
     <div v-scroll-display="{ newText: '現在可以看到我了！', originalText: '滾動看看！' }" style="height: 200px; color: #fff">滾動看看！</div>
+    <ul>
+      <ChildMenu v-for="category in menuData" :key="category.key" :category="category" />
+    </ul>
   </div>
 </template>
 
@@ -16,6 +19,7 @@
   import HeaderBar from '@/components/HeaderBar.vue';
   import GridView from '@/components/GridView.vue';
   import DialogComponent from '@/components/Dialog.vue';
+  import ChildMenu from '@/components/ChildMenu.vue';
 
   const menuData = ref([]);
   const price = ref(0);
