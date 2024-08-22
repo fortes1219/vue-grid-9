@@ -76,25 +76,34 @@
       arcGraphics.clear();
       arcGraphics.lineStyle(4, 0xff0000, 1);
 
+      // 假設這裡是模擬來自SOCKET的隨機倍率數值，這裡用160作為例子
+      const multiplier = 160.0;
+
       // 設定起始點
       const startX = plane.x;
       const startY = plane.y;
 
-      // 隨機生成貝塞爾曲線的控制點和終點
-      const cp1X = startX + Math.random() * 100 + 50; // 第一個控制點X
-      const cp1Y = startY - Math.random() * 100 - 50; // 第一個控制點Y
-      const cp2X = cp1X + Math.random() * 100 + 50; // 第二個控制點X
-      const cp2Y = cp1Y - Math.random() * 100 - 50; // 第二個控制點Y
-      const endX = cp2X + Math.random() * 100 + 50; // 終點X
-      const endY = cp2Y - Math.random() * 100 - 50; // 終點Y
+      // 計算畫布邊界
+      const maxX = app.screen.width - 40; // 保留40px的邊距
+      const maxY = app.screen.height - 40; // 保留40px的邊距
+
+      // 根據倍率生成貝塞爾曲線的控制點和終點，並確保不超過邊界
+      const cp1X = Math.min(startX + Math.random() * 100 * multiplier * 0.1, maxX);
+      const cp1Y = Math.max(startY - Math.random() * 100 * multiplier * 0.05, 40);
+      const cp2X = Math.min(cp1X + Math.random() * 100 * multiplier * 0.1, maxX);
+      const cp2Y = Math.max(cp1Y - Math.random() * 100 * multiplier * 0.05, 40);
+      const endX = Math.min(cp2X + Math.random() * 100 * multiplier * 0.1, maxX);
+      const endY = Math.max(cp2Y - Math.random() * 100 * multiplier * 0.05, 40);
 
       let progress = 0; // 初始進度
-      const duration = 100; // 繪製總步數，數值越大繪製越慢
+
+      // 調整 duration 來改變繪製速度
+      const duration = 100 + multiplier * 0.5; // 隨著倍率增加，延長繪製時間
 
       // 使用 PIXI Ticker 來逐步繪製貝塞爾曲線
       const ticker = new PIXI.Ticker();
       ticker.add(() => {
-        if (progress < duration) {
+        if (progress <= duration) {
           const t = progress / duration; // 正規化進度
           const currentX =
             (1 - t) ** 3 * startX + 3 * (1 - t) ** 2 * t * cp1X + 3 * (1 - t) * t ** 2 * cp2X + t ** 3 * endX;
