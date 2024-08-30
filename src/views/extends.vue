@@ -15,7 +15,8 @@
   let ticker = null;
   let arcGraphics = null;
   const safeMargin = 40; // 安全邊界
-  let targetMultiplier = 0; // 目標倍率
+  // 目標倍率，隨機1.00~2.00之間
+  let targetMultiplier = 0;
 
   onMounted(async () => {
     await app.init({
@@ -36,7 +37,7 @@
     arcGraphics = new PIXI.Graphics();
     app.stage.addChild(arcGraphics);
 
-    const multiplierText = new PIXI.Text('1.0x', {
+    const multiplierText = new PIXI.Text('0.00x', {
       fontFamily: 'Arial',
       fontSize: 64,
       fill: 0xffffff,
@@ -76,8 +77,8 @@
       arcGraphics.clear();
       arcGraphics.lineStyle(4, 0xff0000, 1);
 
-      // 假設這裡是模擬來自SOCKET的隨機倍率數值，這裡用160作為例子
-      const multiplier = 160.0;
+      // 生成 0.00 至 6.00 之間的隨機倍率
+      const multiplier = Math.random() * 6.0;
 
       // 設定起始點
       const startX = plane.x;
@@ -87,20 +88,48 @@
       const maxX = app.screen.width - 40; // 保留40px的邊距
       const maxY = app.screen.height - 40; // 保留40px的邊距
 
-      // 根據倍率生成貝塞爾曲線的控制點和終點，並確保不超過邊界
-      const cp1X = Math.min(startX + Math.random() * 100 * multiplier * 0.1, maxX);
-      const cp1Y = Math.max(startY - Math.random() * 100 * multiplier * 0.05, 40);
-      const cp2X = Math.min(cp1X + Math.random() * 100 * multiplier * 0.1, maxX);
-      const cp2Y = Math.max(cp1Y - Math.random() * 100 * multiplier * 0.05, 40);
-      const endX = Math.min(cp2X + Math.random() * 100 * multiplier * 0.1, maxX);
-      const endY = Math.max(cp2Y - Math.random() * 100 * multiplier * 0.05, 40);
+      // 動態生成控制點和終點
+      const rangeX = maxX - startX;
+      const rangeY = startY - 40;
+
+      let cp1X, cp1Y, cp2X, cp2Y, endX, endY;
+      cp1X = startX + rangeX * 0.3;
+      cp1Y = startY - rangeY * (multiplier / 6.0) * 0.6;
+      cp2X = startX + rangeX * 0.6;
+      cp2Y = startY - rangeY * (multiplier / 6.0) * 0.8;
+      endX = startX + rangeX;
+      endY = startY - rangeY * (multiplier / 6.0);
+
+      // if (multiplier < 5.5) {
+      //   // 墜機邏輯：飛機先上升後急劇下降
+      //   const peakMultiplier = Math.random() * 3.0 + 5.5; // 設定一個最高點的倍率
+      //   cp1X = startX + rangeX * 0.4; // 控制點1位於曲線的前半段
+      //   cp1Y = startY - rangeY * (peakMultiplier / 6.0); // 控制點1讓曲線上升
+
+      //   cp2X = startX + rangeX * 0.6; // 控制點2位於曲線的後半段
+      //   cp2Y = startY - rangeY * (multiplier / 6.0); // 控制點2讓曲線下降
+
+      //   endX = startX + rangeX; // 終點
+      //   endY = startY - rangeY * (multiplier / 6.0); // 終點對應最終倍率
+      // } else {
+      //   // 正常邏輯：只上升
+      //   cp1X = startX + rangeX * 0.3;
+      //   cp1Y = startY - rangeY * (multiplier / 6.0) * 0.6;
+      //   cp2X = startX + rangeX * 0.6;
+      //   cp2Y = startY - rangeY * (multiplier / 6.0) * 0.8;
+      //   endX = startX + rangeX;
+      //   endY = startY - rangeY * (multiplier / 6.0);
+      // }
 
       let progress = 0; // 初始進度
 
-      // 調整 duration 來改變繪製速度
-      const duration = 100 + multiplier * 0.5; // 隨著倍率增加，延長繪製時間
+      // 調整 duration，使飛行時間與倍率掛鉤
+      const duration = 500 + multiplier * 100;
 
-      // 使用 PIXI Ticker 來逐步繪製貝塞爾曲線
+      // 初始化倍率顯示
+      multiplierText.text = `0.00x`;
+
+      // 使用 PIXI Ticker 來逐步繪製貝塞爾曲線並更新倍率顯示
       const ticker = new PIXI.Ticker();
       ticker.add(() => {
         if (progress <= duration) {
@@ -119,8 +148,19 @@
 
           arcGraphics.stroke(); // 繪製當前線條
 
+          // 更新倍率顯示
+          const relativeHeight = (startY - currentY) / rangeY;
+          const currentMultiplier = relativeHeight * 6.0;
+          multiplierText.text = `${currentMultiplier.toFixed(2)}x`;
+
+          // 更新飛機位置，使飛機位於曲線的最尾端
+          plane.x = currentX;
+          plane.y = currentY;
+
           progress++;
         } else {
+          // 繪製完成後設置最終倍率
+          multiplierText.text = `${multiplier.toFixed(2)}x`;
           ticker.stop(); // 完成後停止 Ticker
         }
       });
